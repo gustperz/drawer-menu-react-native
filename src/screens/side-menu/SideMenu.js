@@ -1,66 +1,40 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styles from './SideMenu.style';
-import { NavigationActions } from 'react-navigation';
-import { ScrollView, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { navigate } from '../../navigation/NavigationService';
+import { withNavigation } from 'react-navigation';
 
 class SideMenu extends Component {
-  navigateToScreen = (route) => () => {
-    const navigateAction = NavigationActions.navigate({
-      routeName: route
-    });
-    this.props.navigation.dispatch(navigateAction);
-  }
-
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView>
-          <View>
-            <Text style={styles.sectionHeadingStyle}>
-              Section 1
-            </Text>
-            <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page1')}>
-                Page1
-              </Text>
-            </View>
-          </View>
-          <View>
-            <Text style={styles.sectionHeadingStyle}>
-              Section 2
-            </Text>
-            <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page2')}>
-                Page2
-              </Text>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
-                Page3
-              </Text>
-            </View>
-          </View>
-          <View>
-            <Text style={styles.sectionHeadingStyle}>
-              Section 3
-            </Text>
-            <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page4')}>
-                Page4
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
-        <View style={styles.footerContainer}>
-          <Text>This is my fixed footer</Text>
-        </View>
+        <TouchableOpacity style={styles.btn} onPress={() => {
+          this.props.navigation.navigate('Home');
+          this.props.drawer.current.close();
+        }}>
+          <Text>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={() => {
+          this.props.navigation.navigate('Profile');
+          this.props.drawer.current.close();
+        }}>
+          <Text>Profile</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
-SideMenu.propTypes = {
-  navigation: PropTypes.object
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'blue',
+    paddingTop: 100,
+  },
+  btn: {
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});
 
-export default SideMenu;
+export default withNavigation(SideMenu);

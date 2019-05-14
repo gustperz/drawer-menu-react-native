@@ -1,54 +1,48 @@
-import React, { Component } from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import React , { Component, createRef } from 'react';
 import HomeContainer from '../screens/home/HomeContainer';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import ScalingDrawer from 'react-native-scaling-drawer';
+import SideMenu from '../screens/side-menu/SideMenu';
+import NavigationService from './NavigationService';
+import ProfileContainer from '../screens/profile/ProfileContainer';
 
-class NavigationDrawerStructure extends Component {
-  //Structure for the navigatin Drawer
-  toggleDrawer = () => {
-    //Props to open/close the drawer
-    this.props.navigationProps.toggleDrawer();
-  };
+const AppStack = createStackNavigator({
+  Third: {
+    screen: HomeContainer
+  }, 
+  Profile: ProfileContainer
+});
+
+export const drawer = createRef();
+
+const defaultScalingDrawerConfig = {
+  scalingFactor: 0.8,
+  minimizeFactor: 0.7,
+  swipeOffset: 20
+};
+
+class AppNavigation extends Component {
+  static router = AppStack.router
+
+  componentDidMount = () => {
+    const { navigation } = this.props
+
+    navigation.addListener('didFocus', this.incrementTimesTabbed)
+  }
+
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
-          {/*Donute Button Image */}
-          {/* <Image
-            source={require('./image/drawer.png')}
-            style={{ width: 25, height: 25, marginLeft: 5 }}
-          /> */}
-          <Text>menu</Text>
-        </TouchableOpacity>
-      </View>
+      <ScalingDrawer
+        ref={drawer}
+        content={<SideMenu drawer={drawer} />}
+        {...defaultScalingDrawerConfig}
+        onClose={() => console.log('close')}
+        onOpen={() => console.log('open')}
+      >
+        <AppStack navigation={this.props.navigation}/>
+      </ScalingDrawer>
     );
   }
 }
 
-const Home = createStackNavigator({
-  Third: {
-    screen: HomeContainer,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Demo Screen 3',
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: '#FF9800',
-      },
-      headerTintColor: '#fff',
-    }),
-  },
-});
-
-export default createDrawerNavigator(
-    {
-        Home: {
-          screen: Home,
-          drawerLabel: 'Inicio'
-        }
-    },
-    {
-      initialRouteName: 'Home',
-      drawerType: 'back',
-      overlayColor: 'white'
-    },
-);
+export default createAppContainer(AppNavigation);

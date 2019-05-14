@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
  import { drawer } from '../../navigation/DrawerNavigator'; 
 
-export default HomeView = () => (
+export default ProfileView = () => (
   <View style={styles.MainContainer}>
   <TouchableOpacity onPress={() => drawer.current.open()}>
           
-    <Text style={{ fontSize: 23 }}> HOME </Text>
+    <Text style={{ fontSize: 23 }}> Profile </Text>
         </TouchableOpacity>
   </View>
 );
