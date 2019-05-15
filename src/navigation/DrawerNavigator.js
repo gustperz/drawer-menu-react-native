@@ -1,9 +1,8 @@
 import React , { Component, createRef } from 'react';
 import HomeContainer from '../screens/home/HomeContainer';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import ScalingDrawer from 'react-native-scaling-drawer';
+import Drawer from '../screens/side-menu/Drawer';
 import SideMenu from '../screens/side-menu/SideMenu';
-import NavigationService from './NavigationService';
 import ProfileContainer from '../screens/profile/ProfileContainer';
 
 const AppStack = createStackNavigator({
@@ -32,7 +31,7 @@ class AppNavigation extends Component {
 
   render() {
     return (
-      <ScalingDrawer
+      <Drawer
         ref={drawer}
         content={<SideMenu drawer={drawer} />}
         {...defaultScalingDrawerConfig}
@@ -40,7 +39,7 @@ class AppNavigation extends Component {
         onOpen={() => console.log('open')}
       >
         <AppStack navigation={this.props.navigation}/>
-      </ScalingDrawer>
+      </Drawer>
     );
   }
 }

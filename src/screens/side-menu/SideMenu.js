@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { navigate } from '../../navigation/NavigationService';
 import { withNavigation } from 'react-navigation';
 
 class SideMenu extends Component {
